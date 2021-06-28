@@ -55,13 +55,13 @@ function check_pre_requisites() {
 }
 
 function ri_success_test(){
-    #source <(curl -s https://raw.githubusercontent.com/rajasoun/common-lib/main/pre_requisites.sh)
+    #source <(curl -s https://raw.githubusercontent.com/rajasoun/common-lib/main/pre_checks.sh)
     cmds=(git make shellspec go fswatch code)
     check_pre_requisites "${cmds[@]}" 
 }
 
 function ri_failure_test(){
-    #source <(curl -s https://raw.githubusercontent.com/rajasoun/common-lib/main/pre_requisites.sh)
+    #source <(curl -s https://raw.githubusercontent.com/rajasoun/common-lib/main/pre_checks.sh)
     cmds=(git make shellspec go fswatch1 code1)
     check_pre_requisites "${cmds[@]}" 
 }
