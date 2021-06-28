@@ -31,7 +31,7 @@ function check_pre_requisites() {
    local cmds=("$@")
    for cmd in "${cmds[@]}"
    do 
-        (check_command_exists "$cmd"  && echo "${GREEN}✅ "$cmd" ${NC}" ) || FAILED+=("$cmd")
+        (check_command_exists "$cmd"  && echo "${GREEN}✔️ ${cmd} ${NC}" ) || FAILED+=("$cmd")
    done 
    report_results "${FAILED[@]}"
 }
