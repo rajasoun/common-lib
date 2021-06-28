@@ -17,8 +17,7 @@ function check_command_exists () {
 function report_results() {
     FAILED=("$@")
     if [ ${#FAILED[@]} -ne 0 ]; then
-        echo_std_err "\n💥  ${RED}Failed tests:" "${#FAILED[@]}${NC}"
-        echo "${ORANGE}❌ ${FAILED[@]}${NC}" 
+        echo_std_err "\n💥  ${RED}Failed Checks :" "${#FAILED[@]}${NC}"
         return 1
     else
         echo  "${GREEN}\n💯  All Passed!${NC}\n"
@@ -31,7 +30,7 @@ function check_pre_requisites() {
    local cmds=("$@")
    for cmd in "${cmds[@]}"
    do 
-        (check_command_exists "$cmd"  && echo "${GREEN}✔️ ${cmd} ${NC}" ) || FAILED+=("$cmd")
+        (check_command_exists "$cmd"  && echo "${GREEN}✔️ ${cmd} ${NC}" ) || ( echo "${ORANGE}❌ ${cmd} ${NC}" && FAILED+=("$cmd") )
    done 
    report_results "${FAILED[@]}"
 }
