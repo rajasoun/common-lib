@@ -18,7 +18,7 @@ function report_results() {
     FAILED=("$@")
     if [ ${#FAILED[@]} -ne 0 ]; then
         echo_std_err "\n💥  ${RED}Failed tests:" "${#FAILED[@]}${NC}"
-        echo "${ORANGE}${FAILED[@]} Not Found ${NC}\n" 
+        echo "${ORANGE}❌ ${FAILED[@]}${NC}" 
         return 1
     else
         echo  "${GREEN}\n💯  All Passed!${NC}\n"
