@@ -15,8 +15,8 @@ source <(curl -s source "$BASE_URL/lib/os.sh")
 source <(curl -s source "$BASE_URL/lib/env.sh")
 
 DOCKER_BUILDKIT=1
-DEBUG_OFF="" 
-DEBUG_TOGGLE="${2:-$DEBUG_OFF}"
+DEBUG_ON="-d" 
+DEBUG_TOGGLE="${2:-$DEBUG_ON}"
 DEV_SHELL="${3:-go}"
 
 export DOCKER_BUILDKIT
