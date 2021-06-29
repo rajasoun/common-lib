@@ -12,5 +12,4 @@ function download_go_dev_container(){
     wget "$GO_PATH/.devcontainer/devcontainer.json"
     wget "$GO_PATH/.devcontainer/Dockerfile"
     cd $current_dir
-    ln -s $PWD/.devcontainer vscode-iaac/go/.devcontainer
 }
