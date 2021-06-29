@@ -4,6 +4,7 @@ BASE_URL="https://raw.githubusercontent.com/rajasoun/ci-shell-iaac/main/vscode-i
 
 function download_go_dev_container(){
     current_dir="$PWD"
+    mkdir -p vscode-iaac/go
     GO_PATH="$BASE_URL/go"
     wget "$GO_PATH/go-goss.yaml"
     wget "https://raw.githubusercontent.com/rajasoun/common-lib/main/ci.sh" && chmod +x "ci.sh"
@@ -11,4 +12,6 @@ function download_go_dev_container(){
     wget "$GO_PATH/.devcontainer/devcontainer.json"
     wget "$GO_PATH/.devcontainer/Dockerfile"
     cd $current_dir
+    ln -s $current_dir/.devcontainer vscode-iaac/go/.devcontainer
+
 }
