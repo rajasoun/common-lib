@@ -1,0 +1,2 @@
+include $(shell curl --silent -o .build-docker "https://raw.githubusercontent.com/rajasoun/common-lib/main/make/docker/Makefile"; echo .build-docker)
+include $(shell curl --silent -o .build-go "https://raw.githubusercontent.com/rajasoun/common-lib/main/make/go/Makefile"; echo .build-go)
