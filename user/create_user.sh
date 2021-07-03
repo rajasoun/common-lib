@@ -2,6 +2,12 @@
 
 source <(curl -s https://raw.githubusercontent.com/rajasoun/common-lib/main/ssh/keygen.sh)
 
+USER_NAME="test"
+PURPOSE="_dev_vm"
+KEYS_PATH="ssh-keys"
+PRIVATE_KEY="$KEYS_PATH/id_rsa_$USER_NAME$PURPOSE"
+PUBLIC_KEY="${PRIVATE_KEY}.pub"
+
 # Replace a line of text that matches the given regular expression in a file with the given replacement.
 # Only works for single-line replacements.
 function file_replace_text {
