@@ -16,5 +16,4 @@
           - sudo
           - docker
         ssh_keys:
-          - 'ssh-ed25519 xxxxxx my_user_key'
-          - 'ssh-rsa xxxxxx my_user_key'
+          - 'ssh-rsa _REPLACE_PUBLIC_KEY_'
