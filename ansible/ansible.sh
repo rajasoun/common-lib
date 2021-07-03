@@ -79,7 +79,7 @@ function file_replace_text() {
 
 function prepare_ansible(){
     echo "Downloading Ansible Configuration..."
-    wget https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/config/config/ansible.cfg
+    wget https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/config/ansible.cfg
 
     echo "Downloading Ansible Roles..."
     wget https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/requirements.yml 
