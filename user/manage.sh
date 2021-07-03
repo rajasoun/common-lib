@@ -13,7 +13,7 @@ PLAYBOOK=$3
 USER_NAME="ubuntu"
 PURPOSE="_dev_vm"
 
-SSH_KEYS_PATH="ssh-keys"
+KEYS_PATH="ssh-keys"
 PRIVATE_KEY="$SSH_KEYS_PATH/id_rsa_$USER_NAME$PURPOSE"
 PUBLIC_KEY="${PRIVATE_KEY}.pub"
 
