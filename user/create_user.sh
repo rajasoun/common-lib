@@ -2,7 +2,7 @@
 
 source <(curl -s https://raw.githubusercontent.com/rajasoun/common-lib/main/ssh/keygen.sh)
 
-USER_NAME="test"
+USER_NAME="rajasoun"
 PURPOSE="_dev_vm"
 KEYS_PATH="ssh-keys"
 PRIVATE_KEY="$KEYS_PATH/id_rsa_$USER_NAME$PURPOSE"
@@ -47,4 +47,7 @@ wget https://raw.githubusercontent.com/rajasoun/common-lib/main/user/playbook.ym
 SSH_PUBLIC_KEY=$(cat $PUBLIC_KEY)
 
 file_replace_text "_REPLACE_PUBLIC_KEY_" "$SSH_PUBLIC_KEY"  "playbook.yml"
-#ansible-playbook playbook.yml
+ansible-playbook playbook.yml
+
+# usage: 
+# source <(curl -s https://raw.githubusercontent.com/rajasoun/common-lib/main/user/create_user.sh)
