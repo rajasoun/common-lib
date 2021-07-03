@@ -69,8 +69,8 @@ function prepare_ansible(){
 
     echo "Prepare Ansible Host Inventory..."
     wget -q https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/config/hosts -P "config"
-    SSH_PRIVATE_KEY=$(cat $PRIVATE_KEY)
-    _file_replace_text "_REPLACE_PRIVATE_KEY_" "$SSH_PRIVATE_KEY"  "config/hosts"
+    #SSH_PRIVATE_KEY=$(cat $PRIVATE_KEY | grep -v END | grep -v BEGIN)
+    _file_replace_text "_private_key_path_" "$PRIVATE_KEY"  "config/hosts"
     _file_replace_text "_vm_name_" "$VM_NAME"  "config/hosts"
     _file_replace_text "_vm_ip_" "$VM_IP"  "config/hosts"
 }

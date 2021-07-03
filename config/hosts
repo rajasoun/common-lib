@@ -1,0 +1,9 @@
+[all:vars]
+ansible_connection=ssh
+ansible_user=ubuntu
+ansible_ssh_private_key_file=_private_key_path_
+ansible_python_interpreter=/usr/bin/python3
+
+[servers]
+   ansible_host=
+#  ansible_host=host.docker.internal ansible_port=2222
