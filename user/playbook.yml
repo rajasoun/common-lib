@@ -1,0 +1,20 @@
+---
+
+- name: User Management
+  hosts: all
+  user: root
+  gather_facts: yes
+  become: yes
+  vars:
+  
+    user_management:
+      - name: rajasoun
+        comment: Raja - Dev Box
+        shell: /bin/zsh
+        expires: 1640991600
+        groups:
+          - sudo
+          - docker
+        ssh_keys:
+          - 'ssh-ed25519 xxxxxx my_user_key'
+          - 'ssh-rsa xxxxxx my_user_key'
