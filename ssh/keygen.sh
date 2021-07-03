@@ -8,6 +8,13 @@ PUBLIC_KEY="${PRIVATE_KEY}.pub"
 
 source <(curl -s https://raw.githubusercontent.com/rajasoun/ci-shell-iaac/main/ci-shell/src/lib/os.sh)
 
+# Returns true (0) if this the given command/app is installed and on the PATH or false (1) otherwise.
+function _is_command_found {
+  local -r name="$1"
+  command -v "$name" >/dev/null ||
+    raise_error "${RED}$name is not installed. Exiting...${NC}"
+}
+
 function generate_ssh_keys(){
     debug "Backing up $KEYS_PATH to $KEYS_PATH.bak"
     rm -fr "$KEYS_PATH.bak"
