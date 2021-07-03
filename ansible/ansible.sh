@@ -61,14 +61,14 @@ function _file_replace_text() {
 
 function prepare_ansible(){
     echo "Downloading Ansible Configuration..."
-    wget https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/config/ansible.cfg
+    wget -q https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/config/ansible.cfg
 
     echo "Downloading Ansible Roles..."
-    wget https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/requirements.yml 
+    wget -q https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/requirements.yml 
     ansible-galaxy install -r requirements.yml --force
 
     echo "Prepare Ansible Host Inventory..."
-    wget https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/config/hosts -P "config"
+    wget -q https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/config/hosts -P "config"
     SSH_PRIVATE_KEY=$(cat $PRIVATE_KEY)
     _file_replace_text "_REPLACE_PRIVATE_KEY_" "$SSH_PRIVATE_KEY"  "config/hosts"
     _file_replace_text "_vm_name_" "$VM_NAME"  "config/hosts"
@@ -77,7 +77,7 @@ function prepare_ansible(){
 
 function prepare_playbook(){
     echo "Prepare Playbook..."
-    wget https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/playbooks/$PLAYBOOK
+    wget -q https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/playbooks/$PLAYBOOK
     SSH_PUBLIC_KEY=$(cat $PUBLIC_KEY)
     _file_replace_text "_REPLACE_PUBLIC_KEY_" "$SSH_PUBLIC_KEY"  "$PLAYBOOK"
 }
