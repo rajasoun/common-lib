@@ -87,7 +87,6 @@ function prepare_ansible(){
     file_replace_text "_REPLACE_PUBLIC_KEY_" "$SSH_PUBLIC_KEY"  "users.yml"
 
     echo "Prepare Ansible Host Inventory..."
-    mkdir -p config
     wget https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/config/hosts -P "config"
     SSH_PRIVATE_KEY=$(cat $PRIVATE_KEY)
     file_replace_text "_REPLACE_PRIVATE_KEY_" "$SSH_PRIVATE_KEY"  "config/hosts"
