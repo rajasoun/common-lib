@@ -2,12 +2,13 @@
 
 source <(curl -s https://raw.githubusercontent.com/rajasoun/ci-shell-iaac/main/ci-shell/src/lib/os.sh)
 
-if [ $# -le "2" ]; then
-   raise_error "Usage: $0 <vm_name> <vm_ip>" 
+if [ $# -le "3" ]; then
+   raise_error "Usage: $0 <vm_name> <vm_ip> <playbook_name.yml>" 
 fi
 
 VM_NAME=$1
 VM_IP=$2
+PLAYBOOK=$3
 
 USER_NAME="ubuntu"
 PURPOSE="_dev_vm"
@@ -77,14 +78,12 @@ function file_replace_text() {
 }
 
 function prepare_ansible(){
+    echo "Downloading Ansible Configuration..."
+    wget https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/config/config/ansible.cfg
+
     echo "Downloading Ansible Roles..."
     wget https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/requirements.yml 
     ansible-galaxy install -r requirements.yml --force
-
-    echo "Prepare Playbook..."
-    wget https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/users.yml
-    SSH_PUBLIC_KEY=$(cat $PUBLIC_KEY)
-    file_replace_text "_REPLACE_PUBLIC_KEY_" "$SSH_PUBLIC_KEY"  "users.yml"
 
     echo "Prepare Ansible Host Inventory..."
     wget https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/config/hosts -P "config"
@@ -92,6 +91,13 @@ function prepare_ansible(){
     file_replace_text "_REPLACE_PRIVATE_KEY_" "$SSH_PRIVATE_KEY"  "config/hosts"
     file_replace_text "_vm_name_" "$VM_NAME"  "config/hosts"
     file_replace_text "_vm_ip_" "$VM_IP"  "config/hosts"
+}
+
+function prepare_playbook(){
+    echo "Prepare Playbook..."
+    wget https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/playbooks/$PLAYBOOK
+    SSH_PUBLIC_KEY=$(cat $PUBLIC_KEY)
+    file_replace_text "_REPLACE_PUBLIC_KEY_" "$SSH_PUBLIC_KEY"  "$PLAYBOOK"
 }
 
 # Workaround for Path Limitations in Windows
