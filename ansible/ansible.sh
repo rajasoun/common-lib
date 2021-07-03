@@ -80,13 +80,12 @@ function _file_replace_text() {
 }
 
 function prepare_ansible(){
-    USER_NAME=$1
     echo "Downloading Ansible Configuration..."
     wget -q https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/config/ansible.cfg
 
     echo "Downloading Ansible Roles..."
     wget -q https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/requirements.yml 
-    ansible-galaxy install -r requirements.yml --force
+    DEFAULT_HASH_BEHAVIOUR=combine ansible-galaxy install -r requirements.yml --force
 
     echo "Prepare Ansible Host Inventory..."
     wget -q https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/config/hosts 
