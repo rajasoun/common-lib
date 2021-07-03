@@ -89,12 +89,12 @@ function prepare_ansible(){
     ansible-galaxy install -r requirements.yml --force
 
     echo "Prepare Ansible Host Inventory..."
-    wget -q https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/config/hosts -P "config"
+    wget -q https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/config/hosts 
     #SSH_PRIVATE_KEY=$(cat $PRIVATE_KEY | grep -v END | grep -v BEGIN)
-    _file_replace_text "_user_" "$PRIVATE_KEY"  "config/hosts"
-    _file_replace_text "_private_key_path_" "$USER_NAME"  "config/hosts"
-    _file_replace_text "_vm_name_" "$VM_NAME"  "config/hosts"
-    _file_replace_text "_vm_ip_" "$VM_IP"  "config/hosts"
+    _file_replace_text "_user_" "$PRIVATE_KEY"  "hosts"
+    _file_replace_text "_private_key_path_" "$USER_NAME"  "hosts"
+    _file_replace_text "_vm_name_" "$VM_NAME"  "hosts"
+    _file_replace_text "_vm_ip_" "$VM_IP"  "hosts"
 }
 
 function prepare_playbook(){
@@ -130,13 +130,7 @@ function _docker() {
 }
 
 function ansible_ping(){
-  CMD="ansible -i /config/hosts -m ping all"
-  _docker run --rm -it --user ansible --name ansible_ping \
-            -v "${PWD}/$KEYS_PATH":/keys \
-            -v "${PWD}":/ansible \
-            -v "${PWD}/$CONFIG_BASE_PATH":/config \
-            cytopia/ansible:latest-tools bash -c "$CMD"
-
+  ansible -i hosts -m ping all
   case "$?" in
     0)
         echo "Connection SUCCESS :: Ansible Control Center -> VM ";;
@@ -146,18 +140,8 @@ function ansible_ping(){
 }
 
 function configure_vm(){
-  PLAYBOOK="/ansible/$1"
-  OPTS="ANSIBLE_SCP_IF_SSH=TRUE ANSIBLE_CONFIG=/ansible/ansible.cfg ANSIBLE_GATHERING=smart"
-  CONFIGURE="$OPTS ansible-playbook  -i /config/hosts -v $PLAYBOOK"
-
-  CMD="$CONFIGURE"
-
-  _docker run --rm -it --user ansible --name ansible_configure_vm \
-            -v "${PWD}/$KEYS_PATH":/keys \
-            -v "${PWD}/$ANSIBLE_BASE_PATH":/ansible \
-            -v "${PWD}/$CONFIG_BASE_PATH":/config \
-            cytopia/ansible:latest-tools bash -c "$CMD"
-
+  OPTS="ANSIBLE_SCP_IF_SSH=TRUE ANSIBLE_CONFIG=ansible.cfg ANSIBLE_GATHERING=smart"
+  $OPTS ansible-playbook  -i hosts -v $PLAYBOOK
   case "$?" in
     0)
         echo "VM Configration SUCCESSFULL " ;;
