@@ -2,24 +2,6 @@
 
 source <(curl -s https://raw.githubusercontent.com/rajasoun/ci-shell-iaac/main/ci-shell/src/lib/os.sh)
 
-if [ $# -le "3" ]; then
-   raise_error "Usage: $0 <vm_name> <vm_ip> <playbook_name.yml>" 
-fi
-
-VM_NAME=$1
-VM_IP=$2
-PLAYBOOK=$3
-
-USER_NAME="ubuntu"
-PURPOSE="_dev_vm"
-
-SSH_KEYS_PATH="ssh-keys"
-PRIVATE_KEY="$SSH_KEYS_PATH/id_rsa_$USER_NAME$PURPOSE"
-PUBLIC_KEY="${PRIVATE_KEY}.pub"
-
-ANSIBLE_BASE_PATH="ansible"
-CONFIG_BASE_PATH="config"
-
 # Returns true (0) if this the given command/app is installed and on the PATH or false (1) otherwise.
 function _is_command_found {
   local -r name="$1"
@@ -51,13 +33,13 @@ function generate_ssh_keys(){
 }
 
 # Returns true (0) if this is an OS X server or false (1) otherwise.
-function os_is_darwin() {
+function _os_is_darwin() {
   [[ $(uname -s) == "Darwin" ]]
 }
 
 # Replace a line of text that matches the given regular expression in a file with the given replacement.
 # Only works for single-line replacements.
-function file_replace_text() {
+function _file_replace_text() {
   local -r original_text_regex="$1"
   local -r replacement_text="$2"
   local -r file="$3"
@@ -65,7 +47,7 @@ function file_replace_text() {
   local args=()
   args+=("-i")
 
-  if os_is_darwin; then
+  if _os_is_darwin; then
     # OS X requires an extra argument for the -i flag (which we set to empty string) which Linux does no:
     # https://stackoverflow.com/a/2321958/483528
     args+=("")
@@ -88,16 +70,16 @@ function prepare_ansible(){
     echo "Prepare Ansible Host Inventory..."
     wget https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/config/hosts -P "config"
     SSH_PRIVATE_KEY=$(cat $PRIVATE_KEY)
-    file_replace_text "_REPLACE_PRIVATE_KEY_" "$SSH_PRIVATE_KEY"  "config/hosts"
-    file_replace_text "_vm_name_" "$VM_NAME"  "config/hosts"
-    file_replace_text "_vm_ip_" "$VM_IP"  "config/hosts"
+    _file_replace_text "_REPLACE_PRIVATE_KEY_" "$SSH_PRIVATE_KEY"  "config/hosts"
+    _file_replace_text "_vm_name_" "$VM_NAME"  "config/hosts"
+    _file_replace_text "_vm_ip_" "$VM_IP"  "config/hosts"
 }
 
 function prepare_playbook(){
     echo "Prepare Playbook..."
     wget https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/playbooks/$PLAYBOOK
     SSH_PUBLIC_KEY=$(cat $PUBLIC_KEY)
-    file_replace_text "_REPLACE_PUBLIC_KEY_" "$SSH_PUBLIC_KEY"  "$PLAYBOOK"
+    _file_replace_text "_REPLACE_PUBLIC_KEY_" "$SSH_PUBLIC_KEY"  "$PLAYBOOK"
 }
 
 # Workaround for Path Limitations in Windows
@@ -164,14 +146,14 @@ function configure_vm(){
 
 function run_main(){
     _is_command_found "$@"
-    generate_ssh_keys "$@"
-    print_details "$@"
-    os_is_darwin "$@"
-    file_replace_text "$@"
-    ansible_ping "$@"
-    prepare_ansible "$@"
-    configure_vm "$@"
+    _os_is_darwin "$@"
+    _file_replace_text "$@"
     _docker "$@"
+
+    generate_ssh_keys "$@"
+    prepare_ansible "$@"
+    ansible_ping "$@"
+    configure_vm "$@"
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]
