@@ -8,6 +8,11 @@ KEYS_PATH="ssh-keys"
 PRIVATE_KEY="$KEYS_PATH/id_rsa_$USER_NAME$PURPOSE"
 PUBLIC_KEY="${PRIVATE_KEY}.pub"
 
+# Returns true (0) if this is an OS X server or false (1) otherwise.
+function os_is_darwin {
+  [[ $(uname -s) == "Darwin" ]]
+}
+
 # Replace a line of text that matches the given regular expression in a file with the given replacement.
 # Only works for single-line replacements.
 function file_replace_text {
