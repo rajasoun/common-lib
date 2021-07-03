@@ -1,0 +1,11 @@
+---
+
+- src: https://github.com/softasap/sa-secure-audit-lynis
+  name: sa-secure-audit-lynis
+  version: master
+
+- src: https://github.com/MonolithProjects/ansible-user_management
+  name: ansible-user_management
+  version: master
+
+  
