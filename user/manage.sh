@@ -25,7 +25,8 @@ ANSIBLE_BASE_PATH="ansible"
 CONFIG_BASE_PATH="config"
 
 generate_ssh_keys 
+git_ssh_fix
 prepare_ansible $USER_NAME
-# ansible_ping 
-# configure_vm 
-# rm -fr *.yml *.cfg ssh-keys ssh-keys*.* config roles
+ansible_ping 
+configure_vm 
+rm -fr *.yml *.cfg ssh-keys ssh-keys*.* config roles

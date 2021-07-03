@@ -32,6 +32,26 @@ function generate_ssh_keys(){
     debug "======= END PUBLIC KEY ========="
 }
 
+# ToDo: Technical Debt : Git SSH Fix : Priority P3
+function git_ssh_fix(){
+    ERROR_MSG="${RED}Private SSH Key Not Present. DONT PANIC.${NC}"
+    NEXT_STEP="Run ${GREEN}config${NC} again... Exiting"
+      MSG="$ERROR_MSG \n $NEXT_STEP"
+    [[ ! -f "$PRIVATE_KEY" ]] && echo -e "$MSG" && return 1
+    # Check In Terminal
+    # ssh-add -l > /dev/null || (eval $(ssh-agent -s) && ssh-add $PRIVATE_KEY)
+    echo "${BOLD}Git SSH Hack Fix${NC}"
+    # check if ssh key is already added
+    ssh-add -l > /dev/null || echo "SSH Key "
+    if [ "$(ssh-add -l | wc -l )" = 0 ]; then 
+      echo "Adding SSH Key"
+      eval "$(ssh-agent -s)" && ssh-add $PRIVATE_KEY
+    else
+      echo "${GREEN}SSH Key Already Added. Hack Fix Not Required !!!${NC}"
+      ssh-add -l
+    fi
+  }
+
 # Returns true (0) if this is an OS X server or false (1) otherwise.
 function _os_is_darwin() {
   [[ $(uname -s) == "Darwin" ]]
@@ -153,6 +173,7 @@ function run_main(){
     _docker "$@"
 
     generate_ssh_keys "$@"
+    git_ssh_fix "$@"
     prepare_ansible "$@"
     ansible_ping "$@"
     configure_vm "$@"
