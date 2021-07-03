@@ -85,7 +85,7 @@ function prepare_ansible(){
 
     echo "Downloading Ansible Roles..."
     wget -q https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/requirements.yml 
-    DEFAULT_HASH_BEHAVIOUR=combine ansible-galaxy install -r requirements.yml --force
+    ANSIBLE_HASH_BEHAVIOUR=combine ansible-galaxy install -r requirements.yml --force
 
     echo "Prepare Ansible Host Inventory..."
     wget -q https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/config/hosts 
@@ -137,7 +137,7 @@ function ansible_ping(){
 }
 
 function configure_vm(){
-  OPTS="ANSIBLE_SCP_IF_SSH=TRUE ANSIBLE_CONFIG=ansible.cfg ANSIBLE_GATHERING=smart"
+  OPTS="ANSIBLE_SCP_IF_SSH=TRUE ANSIBLE_CONFIG=ansible.cfg ANSIBLE_GATHERING=smart ANSIBLE_HASH_BEHAVIOUR=combine"
   $OPTS ansible-playbook  -i hosts -v $PLAYBOOK
   case "$?" in
     0)
