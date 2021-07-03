@@ -110,7 +110,7 @@ function _docker() {
 function ansible_ping(){
   CMD="ansible -i /config/hosts -m ping all"
   _docker run --rm -it --user ansible --name ansible_ping \
-            -v "${PWD}/$SSH_KEYS_PATH":/keys \
+            -v "${PWD}/$KEYS_PATH":/keys \
             -v "${PWD}":/ansible \
             -v "${PWD}/$CONFIG_BASE_PATH":/config \
             cytopia/ansible:latest-tools bash -c "$CMD"
@@ -131,7 +131,7 @@ function configure_vm(){
   CMD="$CONFIGURE"
 
   _docker run --rm -it --user ansible --name ansible_configure_vm \
-            -v "${PWD}/$SSH_KEYS_PATH":/keys \
+            -v "${PWD}/$KEYS_PATH":/keys \
             -v "${PWD}/$ANSIBLE_BASE_PATH":/ansible \
             -v "${PWD}/$CONFIG_BASE_PATH":/config \
             cytopia/ansible:latest-tools bash -c "$CMD"
