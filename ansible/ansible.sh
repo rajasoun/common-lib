@@ -82,6 +82,7 @@ function _file_replace_text() {
 function prepare_ansible(){
     echo "Downloading Ansible Configuration..."
     wget -q https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/config/ansible.cfg
+    wget -q https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/config/ansible.opts
 
     echo "Downloading Ansible Roles..."
     wget -q https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/requirements.yml 
@@ -137,8 +138,9 @@ function ansible_ping(){
 }
 
 function configure_vm(){
-  OPTS="ANSIBLE_SCP_IF_SSH=TRUE ANSIBLE_CONFIG=ansible.cfg ANSIBLE_GATHERING=smart "
-  $OPTS ansible-playbook  -i hosts -v $PLAYBOOK
+  #exports ansible.opts
+  export $(echo $(cat ansible.opts | sed 's/#.*//g'| xargs) | envsubst)
+  ansible-playbook  -i hosts -v $PLAYBOOK
   case "$?" in
     0)
         echo "VM Configration SUCCESSFULL " ;;
