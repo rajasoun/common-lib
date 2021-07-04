@@ -6,7 +6,7 @@ source <(curl -s https://raw.githubusercontent.com/rajasoun/ci-shell-iaac/main/c
 function _load_env_variables() {
   FILE=$1
   if [ -f $FILE ]; then
-    export $(echo $(cat $FILE | sed 's/#.*//g'| xargs) | envsubst)
+    export $(echo $(cat $FILE | sed 's/#.*//g'| xargs))
   fi
 }
 
