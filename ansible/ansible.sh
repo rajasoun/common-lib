@@ -2,6 +2,14 @@
 
 source <(curl -s https://raw.githubusercontent.com/rajasoun/ci-shell-iaac/main/ci-shell/src/lib/os.sh)
 
+#  Load Environment Variables from File
+function _load_env_variables() {
+  FILE=$1
+  if [ -f $FILE ]; then
+    export $(echo $(cat $FILE | sed 's/#.*//g'| xargs) | envsubst)
+  fi
+}
+
 # Returns true (0) if this the given command/app is installed and on the PATH or false (1) otherwise.
 function _is_command_found {
   local -r name="$1"
@@ -9,6 +17,7 @@ function _is_command_found {
     raise_error "${RED}$name is not installed. Exiting...${NC}"
 }
 
+#  Generate RSA SSK Keys
 function generate_ssh_keys(){
     debug "Backing up $KEYS_PATH to $KEYS_PATH.bak"
     rm -fr "$KEYS_PATH.bak"
@@ -79,27 +88,17 @@ function _file_replace_text() {
   sed "${args[@]}" > /dev/null
 }
 
+#  Prepare Ansible Environment from common-libs
 function prepare_ansible(){
     echo "Downloading Ansible Configuration..."
     wget -q https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/config/ansible.cfg
     wget -q https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/config/ansible.opts
-
-    echo "Downloading Ansible Roles..."
-    wget -q https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/requirements.yml 
-    ansible-galaxy install -r requirements.yml --force
 
     echo "Prepare Ansible Host Inventory..."
     wget -q https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/config/hosts 
     #SSH_PRIVATE_KEY=$(cat $PRIVATE_KEY | grep -v END | grep -v BEGIN)
     _file_replace_text "_vm_name_" "$VM_NAME"  "hosts"
     _file_replace_text "_vm_ip_" "$VM_IP"  "hosts"
-}
-
-function prepare_playbook(){
-    echo "Prepare Playbook..."
-    wget -q https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/playbooks/$PLAYBOOK
-    SSH_PUBLIC_KEY=$(cat $PUBLIC_KEY)
-    _file_replace_text "_REPLACE_PUBLIC_KEY_" "$SSH_PUBLIC_KEY"  "$PLAYBOOK"
 }
 
 # Workaround for Path Limitations in Windows
@@ -127,6 +126,7 @@ function _docker() {
   return 0
 }
 
+# Ping hosts through Ansible
 function ansible_ping(){
   ansible -i hosts -m ping all
   case "$?" in
@@ -137,6 +137,7 @@ function ansible_ping(){
   esac
 }
 
+# Configure VM
 function configure_vm(){
   #exports ansible.opts
   export $(echo $(cat ansible.opts | sed 's/#.*//g'| xargs) | envsubst)
@@ -154,6 +155,7 @@ function run_main(){
     _os_is_darwin "$@"
     _file_replace_text "$@"
     _docker "$@"
+    _load_env_variables "$@"
 
     generate_ssh_keys "$@"
     git_ssh_fix "$@"
