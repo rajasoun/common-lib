@@ -140,7 +140,7 @@ function ansible_ping(){
 # Configure VM
 function configure_vm(){
   #exports ansible.opts
-  export $(echo $(cat ansible.opts | sed 's/#.*//g'| xargs) | envsubst)
+  _load_env_variables "ansible.opts"
   ansible-playbook  -i hosts -v $PLAYBOOK
   case "$?" in
     0)
