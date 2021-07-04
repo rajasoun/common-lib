@@ -101,6 +101,15 @@ function prepare_ansible(){
     _file_replace_text "_vm_ip_" "$VM_IP"  "hosts"
 }
 
+#  Prepare Ansible Playbook - Inject SSH Public Key To the Playform 
+function prepare_user_playbook(){
+    echo "Prepare Playbook..."
+    wget -q https://raw.githubusercontent.com/rajasoun/common-lib/main/ansible/playbooks/users.yml
+    SSH_PUBLIC_KEY=$(cat $PUBLIC_KEY)
+    _file_replace_text "_REPLACE_PUBLIC_KEY_" "$SSH_PUBLIC_KEY"  "users.yml"
+}
+
+
 # Workaround for Path Limitations in Windows
 function _docker() {
   export MSYS_NO_PATHCONV=1
