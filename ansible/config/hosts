@@ -6,4 +6,4 @@ ansible_python_interpreter=/usr/bin/python3
 
 [servers]
 _vm_name_         ansible_host=_vm_ip_
-local_container   ansible_host=127.0.0.1 ansible_port=2222
+#local_container   ansible_host=127.0.0.1 ansible_port=2222
