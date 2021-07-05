@@ -5,7 +5,7 @@
 In terminal 
 
 ```
-source <(curl -s https://raw.githubusercontent.com/rajasoun/common-lib/main/dev_container.sh)
+source <(curl -s https://raw.githubusercontent.com/rajasoun/common-lib/main/TddGo/dev_container.sh)
 download_go_dev_container
 ```
 
