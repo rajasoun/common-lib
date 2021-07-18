@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
-https://git.io/JW9Nm
+GIST_URL="https://git.io/JW9Nm"
+wget -O- -q $GIST_URL | bash
+
