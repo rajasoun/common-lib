@@ -76,7 +76,7 @@ clean_docker_images
 system_clean
 docker_image_pull_time "rajasoun/speedtest:0.1.0"
 speed_test
-docker_image_pull_time "rajasoun/devcontainer:0.9.2"
+docker_image_pull_time "rajasoun/devcontainer:0.12.2"
 EXIT_CODE="$?"
 _end=$(date +%s)
 _runtime=$((_end-_start))
