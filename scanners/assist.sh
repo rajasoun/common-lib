@@ -106,5 +106,6 @@ function main(){
   esac
 }
 
+# curl -OL https://raw.githubusercontent.com/rajasoun/common-lib/main/scanners/assist.sh && chmod +x assist.sh
 main "$@"
 
