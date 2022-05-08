@@ -26,9 +26,9 @@ function log(){
   EXIT_CODE="$1"
   MESSAGE="$2"
   if [[ -n "$EXIT_CODE" && "$EXIT_CODE" -eq 0 ]]; then
-    echo "${GREEN}$MESSAGE | Success ✅${NC}"
+    echo -e "${GREEN}${UNDERLINE}$MESSAGE |${NC} ✅"
   else
-    echo "${RED}$MESSAGE | Failed ❌${NC}"
+    echo -e "${RED}${UNDERLINE}$MESSAGE |${NC} ❌"
   fi
 }
 
@@ -61,8 +61,11 @@ system_clean
 EXIT_CODE="$?"
 _end=$(date +%s)
 _runtime=$((_end-_start))
-MESSAGE="\n${UNDERLINE}Total Time | $USERNAME | Duration: $(_display_time $_runtime) ${NC}"
+USER_NAME=$(git config --global user.name)
+if [ -z $USER_NAME ];then 
+  USER_NAME=$USER
+fi 
+
+MESSAGE="\nAction: Docker Clean | Duration: $(_display_time $_runtime)"
 log "$EXIT_CODE" "$MESSAGE"
-printf "\n"
-echo "Docker Clean for $USERNAME  Done | $(date)"
-printf "\n"
+echo -e "\nDocker Clean for $USER_NAME  Done | $(date)\n"
