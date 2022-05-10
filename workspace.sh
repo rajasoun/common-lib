@@ -49,13 +49,34 @@ function source_scripts(){
   source <(curl -s https://$base_url/teardown.sh)
 }
 
-workspace="${HOME}/workspace/test"
-git_repository="https://github.com/rajasoun/mac-onboard"
-script_url="raw.githubusercontent.com/rajasoun/mac-onboard/main/lib"
+function workspace(){
+  source_scripts "$script_url"
+  create_workspace $workspace
+  switch_dir $workspace
+  clone_git_repo $git_repository
+  switch_dir "$workspace/$git_dir"
+}
 
-create_workspace $workspace
-switch_dir $workspace
-clone_git_repo $git_repository
-switch_dir "$workspace/$git_dir"
-source_scripts "$script_url"
+function workspace_main(){
+    workspace="${HOME}/workspace/test"
+    git_repository="https://github.com/rajasoun/mac-onboard"
+    script_url="raw.githubusercontent.com/rajasoun/mac-onboard/main/lib"
+    
+    start=$(date +%s)
+    teardown
+    EXIT_CODE="$?"
+    end=$(date +%s)
+    runtime=$((end-start))
+    MESSAGE="Workspace - Setup | $USER | Duration: $(_display_time $runtime) "
+    log "$EXIT_CODE" "$MESSAGE"
+}
+
+# Ignore main when sourced
+[[ $0 != "$BASH_SOURCE" ]] && sourced=1 || sourced=0
+if [ $sourced = 0 ];then
+    echo -e "Executing $0 "
+    workspace_main
+fi
+
+
 
