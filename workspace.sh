@@ -63,7 +63,7 @@ function workspace_main(){
     script_url="raw.githubusercontent.com/rajasoun/mac-onboard/main/lib"
     
     start=$(date +%s)
-    teardown
+    workspace
     EXIT_CODE="$?"
     end=$(date +%s)
     runtime=$((end-start))
