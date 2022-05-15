@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
-BASE_URL="https://raw.githubusercontent.com/rajasoun/common-lib/main/docker/"
-
 # shellcheck source=/dev/null
-source <(curl -s source "$BASE_URL/wrapper.sh")
+source <(curl -s source "https://raw.githubusercontent.com/rajasoun/common-lib/main/docker/wrapper.sh")
 
 opt="$1"
 choice=$( tr '[:upper:]' '[:lower:]' <<<"$opt" )
@@ -12,13 +10,14 @@ case ${choice} in
       docker_clean_all
     ;;
     "speed-test")
-        speed-test
+      speed-test
     ;;
-    "docker-run")
-        _docker "$@"
+    "wrapper")
+      echo -e "${GREEN}\nRun${NC}"
+      echo -e "${ORANGE}source <(curl -s source "https://raw.githubusercontent.com/rajasoun/common-lib/main/docker/wrapper.sh")${NC}"
     ;;
     *)
-    echo "${RED}Usage: $0 < clean | speed-test | docker-run >${NC}"
+    echo "${RED}Usage: $0 < clean | speed-test > ${NC}"
 cat <<-EOF
 Commands:
 ---------
