@@ -18,7 +18,7 @@ case ${choice} in
         _docker "$@"
     ;;
     *)
-    echo "${RED}Usage: automator/ci.sh <build | e2e | taerdown | shell> [-d]${NC}"
+    echo "${RED}Usage: $0 < clean | speed-test | docker-run >${NC}"
 cat <<-EOF
 Commands:
 ---------
