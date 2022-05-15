@@ -23,7 +23,7 @@ Commands:
 ---------
   clean       -> Clean all Docker Containers, Volumes and Images
   speed-test  -> Run Speed Test
-  docker-run  -> Wrapper for MinTTY Docker
+  wrapper     -> Provides Wrapper command for MinTTY Docker
 EOF
     ;;
 esac
